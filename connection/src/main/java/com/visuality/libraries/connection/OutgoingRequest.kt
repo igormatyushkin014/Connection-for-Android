@@ -1,11 +1,13 @@
 package com.visuality.libraries.connection
 
-class Response(
+internal class OutgoingRequest(
     val requestId: String,
+    val recipientId: String?,
+    val event: String,
     val data: Any?
 ) {
 
     companion object {
-        const val TYPE = "raw.response"
+        const val TYPE = "raw.request"
     }
 }
