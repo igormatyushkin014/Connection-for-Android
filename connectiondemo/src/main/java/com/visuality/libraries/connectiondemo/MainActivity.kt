@@ -3,10 +3,10 @@ package com.visuality.libraries.connectiondemo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
-import android.widget.Toast
 import com.visuality.libraries.connection.Connection
 import com.visuality.libraries.connection.ConnectionConfiguration
-import com.visuality.libraries.connection.Request
+import com.visuality.libraries.connection.IncomingRequest
+import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
 
@@ -49,6 +49,16 @@ class MainActivity : AppCompatActivity() {
         this.updateStatusTextView(
             status = "Connected"
         )
+
+        this.connection.send(
+            event = "test",
+            data = JSONObject().apply {
+                put("greeting", "Hello!")
+            },
+            recipientId = null,
+            callback = { data ->
+            }
+        )
     }
 
     private fun onConnectionError() {
@@ -58,14 +68,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onRequest(
-        request: Request,
+        request: IncomingRequest,
         respond: (data: Any) -> Unit
     ) {
-        Toast.makeText(
-            this,
-            "Incoming request",
-            Toast.LENGTH_SHORT
-        ).show()
+        respond(
+            JSONObject().apply {
+                put("description", "Hello server!")
+            }
+        )
     }
 
     private fun onDisconnected() {
